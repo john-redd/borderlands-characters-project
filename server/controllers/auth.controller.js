@@ -1,15 +1,5 @@
-const { DATABASE_URL } = process.env;
-const Sequelize = require('sequelize');
 const bcrypt = require('bcryptjs');
-
-const sequelize = new Sequelize(DATABASE_URL, {
-  dialect: 'postgres',
-  dialectOptions: {
-    ssl: {
-      rejectUnauthorized: false,
-    },
-  },
-});
+const sequelize = require('../utils/db');
 
 async function getUserByEmail(email) {
   const [existingRecord] = await sequelize.query(`
@@ -66,7 +56,7 @@ async function handleLogin(req, res) {
     ...existingRecord,
   };
 
-  res.redirect('/protected');
+  res.redirect('/characters');
 }
 
 function handleLogout(req, res) {

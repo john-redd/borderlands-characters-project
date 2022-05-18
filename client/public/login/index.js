@@ -8,7 +8,7 @@ async function login(email, password) {
   try {
     await axios.post('/auth/login', { email, password });
 
-    window.location = '/protected';
+    window.location = '/characters';
   } catch (error) {
     showUnexpectedErrorAlert();
   }

@@ -6,14 +6,10 @@ const path = require('path');
 const express = require('express');
 
 const app = express();
-const { getCharacters } = require('./controllers/characters.controller');
-const {
-  handleSignUp,
-  handleLogin,
-  handleLogout,
-} = require('./controllers/auth.controller');
 const { createDatabaseSchema } = require('./controllers/seed.controller');
 const session = require('express-session');
+const { authRouter } = require('./routers/auth.router');
+const { charactersRouter } = require('./routers/characters.router');
 
 app.use(
   session({
@@ -27,23 +23,19 @@ app.use(
   })
 );
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 app.post('/seed', createDatabaseSchema);
-
-app.post('/auth/sign-up', handleSignUp);
-app.post('/auth/login', handleLogin);
-app.delete('/auth/logout', handleLogout);
-
-app.get('/api/characters', getCharacters);
-
-app.get('/', (req, res) => res.redirect('/login'));
+app.use('/auth', authRouter);
+app.use('/api/characters', charactersRouter);
 
 const publicDir = path.join(__dirname, '../client/public');
-const protectedDir = path.join(__dirname, '../client/protected');
+const charactersDir = path.join(__dirname, '../client/characters');
 
+app.get('/', (req, res) => res.redirect('/login'));
 app.use(express.static(publicDir));
 app.use(
-  '/protected',
+  '/characters',
   (req, res, next) => {
     if (req.session?.user?.id) {
       next();
@@ -51,7 +43,7 @@ app.use(
       res.redirect('/login');
     }
   },
-  express.static(protectedDir)
+  express.static(charactersDir)
 );
 
 app.listen(PORT, () => {

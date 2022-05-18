@@ -6,9 +6,9 @@ submitButton.addEventListener('click', handleSignUp);
 
 async function signUp(email, password) {
   try {
-    const res = await axios.post('/auth/sign-up', { email, password });
+    await axios.post('/auth/sign-up', { email, password });
 
-    window.location = '/protected';
+    window.location = '/characters';
   } catch (error) {
     showUnexpectedErrorAlert();
   }

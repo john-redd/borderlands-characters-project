@@ -13,7 +13,16 @@
       <h1>Borderlands Characters Tracker</h1>
       <button id="logout-btn">Logout</button>
     </header>
-    <main>Protected</main>
+    <main>
+      <form action="/api/characters" method="post">
+        <input name="name" type="text" required placeholder="Name"/>
+        <input name="level" type="number" required max="72" min="1" placeholder="Level" />
+        <button name="submit" type="submit">Create Character</button>
+      </form>
+      <section >
+        <ul id="characters-container"></ul>
+      </section>
+    </main>
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.27.2/axios.min.js"
       integrity="sha512-odNmoc1XJy5x1TMVMdC7EMs3IVdItLPlCeL5vSUPN2llYKMJ2eByTTAIiiuqLg+GdNr9hF6z81p27DArRFKT7A=="
