@@ -34,17 +34,28 @@ async function getCharacters() {
 function renderCharacters(characters) {
   const charactersContainer = document.getElementById('characters-container');
 
-  const htmlStr = characters
-    .map((character) => {
-      return `
-      <li>
-        <p>${character.name} is level ${character.level}</p>
-      </li>
-    `;
-    })
-    .join('');
+  for (const character of characters) {
+    const p = document.createElement('p');
+    p.innerText = `${character.name} is level ${character.level}`;
 
-  charactersContainer.innerHTML = htmlStr;
+    const li = document.createElement('li');
+    li.appendChild(p);
+    li.addEventListener('dblclick', () => {
+      const nameInput = document.getElementsByName('name')[0];
+      const levelInput = document.getElementsByName('level')[0];
+      const methodInput = document.getElementsByName('_method')[0];
+      const idInput = document.getElementsByName('id')[0];
+      const button = document.getElementsByName('submit')[0];
+
+      nameInput.value = character.name;
+      levelInput.value = character.level;
+      methodInput.value = 'patch';
+      idInput.value = character.id;
+      button.innerText = 'Update Character';
+    });
+
+    charactersContainer.appendChild(li);
+  }
 }
 
 getCharacters();

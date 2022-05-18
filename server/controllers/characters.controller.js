@@ -21,18 +21,24 @@ async function getCharacters(req, res) {
   }
 }
 
-async function createCharacter(req, res) {
-  const { name, level: levelStr } = req.body;
+async function handleCharacterMutations(req, res) {
+  const { name, level: levelStr, _method, id } = req.body;
   const userID = req.session.user.id;
 
-  await sequelize.query(`
+  if (_method === 'post') {
+    await sequelize.query(`
     insert into characters (name, level, user_id) values ('${name}', ${+levelStr}, ${userID});
   `);
+  } else if (_method === 'patch') {
+    await sequelize.query(`
+    update characters set name = '${name}', level = ${+levelStr} where id = ${id};
+  `);
+  }
 
   res.redirect('/characters');
 }
 
 module.exports = {
   getCharacters,
-  createCharacter,
+  createCharacter: handleCharacterMutations,
 };

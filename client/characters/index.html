@@ -15,6 +15,8 @@
     </header>
     <main>
       <form action="/api/characters" method="post">
+        <input name="id" type="number" hidden />
+        <input name="_method" type="text" hidden value="post" />
         <input name="name" type="text" required placeholder="Name"/>
         <input name="level" type="number" required max="72" min="1" placeholder="Level" />
         <button name="submit" type="submit">Create Character</button>
